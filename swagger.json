@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Blog",
+    "description": "Criando um blog no Backend",
+    "termsOfService": "",
+    "contact": {
+      "email": "pedroaolive@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "server": [
+    {
+        "url": "",
+        "description": ""
+    }
+  ],
+  "paths": {
+    
+  }
+}
