@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors())
-app.use('/blog', router.register, router.allUsers)
+app.use('/blog', router.register, router.allUsers, router.userId, router.editUser, router.deleteUser)
 
 const port = 3333 || process.env.PORT;
 
