@@ -7,8 +7,17 @@ const register = router.post('/register', blogController.registerUser)
 
 const allUsers = router.get('/users', blogController.showUsers)
 
+const userId = router.get('/user/:id', blogController.UserId)
+
+const editUser = router.patch('/editUser/:id', blogController.editUser)
+
+const deleteUser = router.delete('/deleteUser/:id', blogController.deleteUser)
+
 export = {
     register,
-    allUsers
+    allUsers,
+    userId,
+    editUser,
+    deleteUser,
 }
 
