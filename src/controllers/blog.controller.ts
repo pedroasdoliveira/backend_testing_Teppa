@@ -1,14 +1,7 @@
 import { Request, Response } from "express";
+import { UserInfosTypes } from '../dto/user.types'
 import { hash } from "bcrypt";
-import * as admin from "firebase-admin";
-import * as credentials from "../db/key.json";
-
-admin.initializeApp({
-  credential: admin.credential.cert(credentials as admin.ServiceAccount),
-});
-
-const db = admin.firestore();
-
+import { db } from "../db/credentials";
 class BlogController {
   async registerUser(req: Request, res: Response) {
     try {
@@ -20,7 +13,7 @@ class BlogController {
         profession,
         password,
         confirmPassword,
-      } = req.body;
+      }: UserInfosTypes = req.body;
 
       const passwordHash = await hash(password, 10);
       const userJson = {
@@ -30,7 +23,7 @@ class BlogController {
         email,
         profession,
         password: passwordHash,
-        confirmPassword,
+        confirmPassword: passwordHash,
       };
 
       if (password !== confirmPassword) {
@@ -71,17 +64,29 @@ class BlogController {
 
   async editUser(req: Request, res: Response) {
     try {
+      const {
+        firstName,
+        lastName,
+        age,
+        email,
+        profession,
+        password,
+        confirmPassword,
+      }: UserInfosTypes = req.body;
+
+      const passwordHash = await hash(password, 10);
+
       const userJson = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        age: req.body.age,
-        email: req.body.email,
-        profession: req.body.profession,
-        password: req.body.password,
-        confirmPassword: req.body.confirmPassword,
+        firstName,
+        lastName,
+        age,
+        email,
+        profession,
+        password: passwordHash,
+        confirmPassword: passwordHash,
       };
 
-      if (userJson.password !== userJson.confirmPassword) {
+      if (password !== confirmPassword) {
         res.status(402).send({ message: "Senhas incompativeis!" });
         return;
       }
@@ -90,6 +95,7 @@ class BlogController {
         .collection("users")
         .doc(req.params.id)
         .update(userJson);
+
       res.status(201).send(userRef);
     } catch (error: any) {
       res.status(404).send({ message: "Error" + error });
@@ -109,7 +115,7 @@ class BlogController {
   }
 }
 
-export {BlogController}
+export { BlogController };
 
 // const registerUser = async (req: Request, res: Response) => {
 //   const {
